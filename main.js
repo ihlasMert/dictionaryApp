@@ -6,15 +6,13 @@ const btn = document.getElementById("search-btn");
 btn.addEventListener("click", () => {
   let inpWord = document.getElementById("inp-word").value;
   fetch(`${url}${inpWord}`)
-  .then((response) => response.json())
-  .then((data)=>{
-    console.log(data);
-    result.innerHTML = `
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+
+      result.innerHTML = `
     <div class="word">
     <h3>${inpWord}</h3>
-    <button>
-      <i class="fa-sharp fa-solid fa-volume-high"></i>
-    </button>
   </div>
   <div class="details">
     <p>${data[0].meanings[0].partOfSpeech}</p>
@@ -25,6 +23,11 @@ btn.addEventListener("click", () => {
   </p>
   <div class="word-example">
     ${data[0].meanings[0].definitions[0].example || ""}
-  </div>`
-  });
+  </div>`;
+      sound.setAttribute("src", `https:${data[0].phonetics[0].audio}`);
+      console.log(sound);
+    });
 });
+function playSound() {
+  sound.play();
+}
